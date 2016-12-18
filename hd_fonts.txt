@@ -1,0 +1,51 @@
+﻿===============================================
+OptiFine高清字体功能的描述
+基于MCPatcher的高清字体
+===============================================
+
+高清字体
+========
+
+截至1.6，Minecraft允许字体的分辨率高于默认，但自定义程度仍然有限。
+
+MCPatcher第一个在"assets/minecraft/mcpatcher/font"文件夹内寻找字体。
+这允许您使用一个在原版下工作的自定义字体和一个需要MCPatcher才能正确显示的更高分辨率的字体。
+
+    默认字体：ssets/minecraft/mcpatcher/font/ascii.png
+    附魔台字体：assets/minecraft/mcpatcher/font/ascii_sga.png
+
+注意：Unicode字体不被支持。
+
+为允许更多地控制单字符的宽度，MCPatcher提供了一种手动指定的方式。
+创建一个被调用的属性文件：
+
+    assets/minecraft/mcpatcher/font/ascii.properties
+    assets/minecraft/mcpatcher/font/ascii_sga.properties
+
+对应于您希望自定义的字体.。
+
+属性文件格式
+======================
+
+此文件中的每一行均指定一个字符的宽度：
+
+  #自定义宽度
+  width.<ascii value 0-255>=<width 0-8>
+
+例如，为指定大写字母A、B和C的宽度，您可以使用
+
+  # ABC
+  width.65=5.9
+  width.66=5
+  width.67=5.25
+
+值可为浮点数值（原版只支持整数宽度），范围为从0-8，无论字体的分辨率如何。
+您不需要指定所有字符的宽度，而只需要指定那些需要覆盖默认宽度的字符。
+
+间隔符号有些特殊。它的默认宽度是A-Z、a-z和0-9宽度的平均值的1/2，
+这使得单词之间的间距与字体的整体宽度相匹配。然而，您依然可以通过
+将width.32设为一个自定义值的方式重写间隔符号的宽度。
+
+参考
+=========
+https://bitbucket.org/prupe/mcpatcher/wiki/HD_Fonts

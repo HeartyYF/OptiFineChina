@@ -1,0 +1,19 @@
+未实现的MCPatcher特性：
+
+连接材质
+- innerSeams
+- renderpass
+
+自定义物品
+- method
+- cap
+- fade
+
+随机生物
+- redcow_overlay
+- snowman_overlay
+
+其他
+- line.properties
+- renderpass.properties
+- compass.properties
