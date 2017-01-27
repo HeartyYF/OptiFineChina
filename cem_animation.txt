@@ -1,0 +1,98 @@
+######################################################################
+# 自定义实体模型动画
+# 对OptiFine自定义实体模型动画功能的配置示例。
+######################################################################
+# 每个要被动画化的模型变量(variables)被赋值为一个表达式(expression)。
+# 每次模型被渲染，表达式便进行计算，并将它的值赋给变量。
+# 变量和表达式在Json实体模型(json entity model, JEM)的“animation”部分定义。
+#  
+#  "animations":
+#  [
+#    {
+#      "variable1": "expression1",    
+#      "variable2": "expression2,
+#      ...
+#    }
+#  ]
+# 
+# 
+# 变量(Variables)
+# 模型变量在格式(format)中指定
+#   "<model>.<variable_name>"
+#
+# 模型可以是：
+#  "this" - 当前自定义模型
+#  "part" - 附加自定义模型的原始部分模型
+#  "<part>" - 通过部分(part)名称指定的原始模型
+#  "<id>" - 通过ID指定的自定义模型
+#  "<part>:<sub_id>:<sub_sub_id>:..." - （分级）以通过部分名称指定的原始模型开始，之后通过ID查找子类
+#  "<id>:<sub_id>:<sub_sub_id>:..." - （分级）以通过ID指定的模型开始，之后通过ID查找子类
+#
+# 如果有重复，那么通过部分名称或ID查找到的模型会被使用。
+# 通过ID搜索的或被用在分级规范的模型是深度的。 
+#
+# 分级规范允许模型组（json部分模型）可以重复应用于不同部分。
+# 例如，一个手部模型("shoulder:upper_arm:elbow:forearm:palm:finger[1.5]"既可以应用于左手，又可以应用于右手。
+# 动画可以为左手拇指使用"left_hand:finger1"，为右手拇指使用"right_hand:finger1"。
+# 在分级规范中的中间亲类可以被跳过。
+#
+# 变量名称
+#   tx, ty, tz - 转译的(translation)x, y, z
+#   rx, ry, rz - 旋转的(rotation)x, y, z
+#   ox, oy, oz - 偏（离中）心的(offset)x, y, z（绝对，不随模型缩放(scale)，可用于转译(translation)动画）
+#   sx, sy, sz - 缩放的(scale)x, y, z
+# 
+# 表达式(Expressions)
+#
+# 表达式是带有括号、常数、变量、运算符和函数的一般数学表达式。
+#
+# 常数
+#   浮点数
+#   pi - 3.1415926
+#
+# 变量
+#   <model>.<var> - 模型变量，参见模型变量的说明
+#   time - tick表达的当前世界时间
+#
+# 渲染变量（活的实体）
+#   limb_swing - 肢体动画计数器(limb animation counter)
+#   limb_speed - 肢体运动速度(limb movement speed)
+#   age - tick表达的年龄(age)
+#   head_yaw - 头部Y轴旋转(yaw)
+#   head_pitch - 头部X轴旋转(pitch)
+#   scale - 渲染级别(scale)，默认为0.0625
+#
+# 运算符
+#   +, -, *, /, %
+#
+# 函数
+#   sin(x)
+#   cos(x)
+#   tan(x)
+#   atan(x)
+#   atan2(y,x)
+#   torad(deg)
+#   todeg(rad)
+#   min(x,y)
+#   max(x,y)
+#   clamp(x,xmin,xmax)
+#   abs(x)
+#   floor(x)
+#   ceil(x)
+#   frac(x)
+#   round(x)
+#   sqrt(x)
+#   fmod(x,y) - 相似于Math.floorMod()
+#
+#  示例：
+#    ...
+#    "animations":
+#    [
+#      {
+#        "this.rx": "clamp(-0.5 * part.rx, 0, 90)",
+#        "this.tx": "3 * sin(limb_swing / 4) - 2",
+#        "this:Hoof.rx": "leg4:Hoof.rx / 2"
+#        ...
+#      }
+#    ]
+#    
