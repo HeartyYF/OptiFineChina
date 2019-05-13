@@ -30,7 +30,7 @@ The first one, gcolor has its color cleared to the current fog color before rend
 The second one, gdepth has its color cleared to solid white before rendering and uses a higher precision storage buffer suitable for storing depth values. 
 The rest have their color cleared to black with 0 alpha.
 
-每个颜色附件使用两个缓冲器，逻辑名分别为"main"和"alt", 它们可以被当成乒乓缓冲器使用(ping-pong buffer).
+每个颜色附件使用两个缓存器，逻辑名分别为"main"和"alt", 它们可以被当成乒乓缓存器(ping-pong buffer)使用.
 When the buffers are flipped the mapping between main/alt and A/B is reversed.
 Gbuffer programs always read from "main" (only gaux1-4) and write to "main" buffers (they shouldn't read and write to the same buffer at the same time).
 Deferred/composite programs always read from "main" and write to "alt" buffers. 
