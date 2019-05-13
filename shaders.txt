@@ -1,12 +1,12 @@
-Overview
+简介
 ========
-着色器利用延迟渲染管线进行工作。
-The gbuffer shaders come first in the pipeline. They render data to textures that will be sent to the composite shaders. 
-Optional deferred shaders can be added between terrain and water rendering.
-The composite shaders then render to textures that will be sent to the final shader. 
-The final shader renders directly to the screen.
+optifine的着色器利用延迟渲染管线进行工作.
+管线中第一个被处理的是gbuffer着色器，，它将会把数据渲染到纹理中，并把结果发送到合成着色器(composite shader)中.
+可选的延迟着色器可以用在对地形与水的渲染.
+紧接着composite着色器再对纹理进行渲染，把结果发送给最终着色器里(final shader). 
+最终着色器负责将结果显示到屏幕里.
 
-Shader Files
+着色器文件
 ============
 在光影包中，所有的着色器配置文件都放在 "shaders" 文件夹里.
 着色器文件的后缀决定了这些文件所对应的功能。
@@ -17,7 +17,7 @@ Shader Files
 .gsh       几何着色器  
 .fsh       片段着色器   
 
-几何着色器需要带布局限定符支持的OpenGL 3.2或者是带"maxVerticesOut"组态的GL_ARB_geometry_shader4的支持
+几何着色器需要带布局限定符支持的OpenGL 3.2或者是带"maxVerticesOut"组态的GL_ARB_geometry_shader4扩展的支持
 
 颜色附件
 =================
@@ -30,7 +30,7 @@ The first one, gcolor has its color cleared to the current fog color before rend
 The second one, gdepth has its color cleared to solid white before rendering and uses a higher precision storage buffer suitable for storing depth values. 
 The rest have their color cleared to black with 0 alpha.
 
-Each color attachment uses 2 buffers (A and B) with logical names "main" and "alt", which can be used as ping-pong buffers.
+每个颜色附件使用两个缓冲器，逻辑名分别为"main"和"alt", 它们可以被当成乒乓缓冲器使用(ping-pong buffer).
 When the buffers are flipped the mapping between main/alt and A/B is reversed.
 Gbuffer programs always read from "main" (only gaux1-4) and write to "main" buffers (they shouldn't read and write to the same buffer at the same time).
 Deferred/composite programs always read from "main" and write to "alt" buffers. 
