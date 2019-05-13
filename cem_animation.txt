@@ -37,9 +37,9 @@
 # 在分级规范中的中间亲类可以被跳过。
 #
 # 变量名称
-#   tx, ty, tz - 变换(translation)x, y, z
+#   tx, ty, tz - 平移(translation)x, y, z
 #   rx, ry, rz - 旋转(rotation)x, y, z
-#   ox, oy, oz - 偏移量(offset)x, y, z（不随模型缩放(scale)操作而改变，可用于变换操作(translation)相关的动画）
+#   ox, oy, oz - 偏移量(offset)x, y, z（不随模型缩放(scale)操作而改变，可用于平移操作(translation)相关的动画）
 #   sx, sy, sz - 缩放(scale)x, y, z
 # 
 # 表达式(Expressions)
