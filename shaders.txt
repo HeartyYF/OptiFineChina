@@ -529,13 +529,13 @@ as this would affect face culling, ambient occlusion, light propagation and so o
 For exaple:
   layer.translucent=glass_pane fence wooden_door
 
-Item ID mapping
+物品 ID 映射
 ================
-The item ID mapping is defined in "shaders/item.properties" included in the shader pack.
-Forge mods may add custom item mapping as "assets/<modid>/shaders/item.properties" in the mod JAR file.
-The "item.properties" file can use conditional preprocessor directives (#ifdef, #if, etc.)
-For more details see section "Standard Macros" A to G. Option macros are not available.
-Format "item.<id>=<item1> <item2> ..."
+物品ID的映射可以在光影包里的"shaders/item.properties"中声明。
+Forge mods中的自定义物品可以在mod中的JAR文件里将物品映射添加为"assets/<模组ID>/shaders/item.properties"
+ "item.properties"文件中可以使用预处理命令如(#ifdef, #if, etc.)
+更多的细节请参阅 "Standard Macros"中的 A 到 G部分。可选macros不再适用。
+格式： "item.<id>=<item1> <item2> ..."
 The key is the substitute item ID, the values are the items which are to be replaced.
 Only one line per item ID is allowed.
 
@@ -563,36 +563,36 @@ Standard Macros
 ===============
 The standard macros are automatically included after the "#version" declaration in every shader file
 
-A. Minecraft version
+A. 指定Minecraft版本
  #define MC_VERSION <value>
- The value is in format 122 (major 1, minor 2, release 2)
- For example: 1.9.4 -> 10904, 1.11.2 -> 11102, etc.
+ 值必须遵循特定的格式： 122 (major 1, minor 2, release 2)
+ 例如: 1.9.4 -> 10904, 1.11.2 -> 11102,等.
 
-B. Maximum supported GL version
+B. 指定最高 GL 版本
  #define MC_GL_VERSION <value>
- The value is integer, for example: 210, 320, 450
+ 值必须为整数，例如: 120, 150, 450
 
-C. Maximum supported GLSL version
+C. 指定最高 GLSL 版本
  #define MC_GLSL_VERSION <value>
- The value is integer, for example: 120, 150, 450
+ 值必须为整数，例如: 120, 150, 450
 
-D. Operating system 
- One of the following:
+D. 指定操作系统 
+ 声明下面列表中的一个:
   #define MC_OS_WINDOWS
   #define MC_OS_MAC
   #define MC_OS_LINUX
   #define MC_OS_OTHER
 
-E. GPU
- One of the following:
+E. 指定GPU
+ 声明下面列表中的一个:
   #define MC_GL_VENDOR_ATI
   #define MC_GL_VENDOR_INTEL
   #define MC_GL_VENDOR_NVIDIA
   #define MC_GL_VENDOR_XORG
   #define MC_GL_VENDOR_OTHER
 
-F. Driver
- One of the following:
+F. 指定显卡驱动
+ 声明下面列表中的一个:
   #define MC_GL_RENDERER_RADEON 
   #define MC_GL_RENDERER_GEFORCE
   #define MC_GL_RENDERER_QUADRO
@@ -601,12 +601,12 @@ F. Driver
   #define MC_GL_RENDERER_MESA
   #define MC_GL_RENDERER_OTHER
 
-G. OpenGL extensions
+G. OpenGL扩展
  Macros for the supported OpenGL extensions are named like the corresponding extension with a prefix "MC_".
  For example the macro "MC_GL_ARB_shader_texture_lod" is defined when the extension "GL_ARB_shader_texture_lod" is supported.
  Only the macros which are referenced and supported are added to the shader file.
 
-H. Options
+H. 可选项
  #define MC_FXAA_LEVEL <value>       // When FXAA is enabled, values: 2, 4
  #define MC_NORMAL_MAP               // When the normal map is enabled
  #define MC_SPECULAR_MAP             // When the specular map is enabled
@@ -616,7 +616,7 @@ H. Options
  #define MC_OLD_HAND_LIGHT           // When Old Hand Light is enabled
  #define MC_OLD_LIGHTING             // When Old Lighting is enabled
 
-References
+参见
 ==========
  http://daxnitro.wikia.com/wiki/Editing_Shaders_%28Shaders2%29
  http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1286604-shaders-mod-updated-by-karyonix
