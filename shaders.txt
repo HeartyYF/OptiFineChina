@@ -3,8 +3,8 @@
 optifine的着色器利用延迟渲染管线进行工作.
 管线中第一个被处理的是gbuffer着色器，，它将会把数据渲染到纹理中，并把结果发送到合成着色器(composite shader)中.
 可选的延迟着色器可以用在对地形与水的渲染.
-紧接着composite着色器再对纹理进行渲染，把结果发送给最终着色器里(final shader). 
-最终着色器负责将结果显示到屏幕里.
+紧接着composite着色器再对纹理进行渲染，把结果发送给最终着色器(final shader)里. 
+最终着色器负责将渲染效果投射到屏幕上.
 
 着色器文件
 ============
@@ -42,7 +42,7 @@ The virtual programs "deferred_pre" and "composite_pre" can be used for buffer f
 Writing to color attachments that the composite shader also reads from will generate artifacts (unless you just copy the original contents) 
 
 顶点与片段着色器文件的解析是由预处理条件编译指令完成.
-以下为现在可以使用的预处理指令:
+以下为目前可以使用的预处理指令:
   #define <macro>
   #undef <macro>
   #ifdef <macro>
