@@ -3,7 +3,7 @@
 optifine的着色器利用延迟渲染管线进行工作.
 管线中第一个被处理的是gbuffer着色器，，它将会把数据渲染到纹理中，并把结果发送到合成着色器(composite shader)中.
 可选的延迟着色器可以用在对地形与水的渲染.
-紧接着composite着色器再对纹理进行渲染，把结果发送给最终着色器(final shader)里. 
+紧接着合成着色器再对纹理进行渲染，把结果发送给最终着色器(final shader)里. 
 最终着色器负责将渲染效果投射到屏幕上.
 
 着色器文件
@@ -23,12 +23,12 @@ optifine的着色器利用延迟渲染管线进行工作.
 =================
 着色器之间的数据传递是通过颜色附件的方式来完成. 
 There are at least 4 for all machines. For machines that can support it, there are 8. 
-In the deferred, composite and final shaders, these are referenced by the gcolor, gdepth, gnormal, composite, gaux1, gaux2, gaux3 and gaux4 uniforms
-(colortex0 to colortex7 can be used instead of gcolor, gdepth etc.)
-Despite the naming, all of these color attachments are the same and can be used for any purpose with the exception of the first two. 
-The first one, gcolor has its color cleared to the current fog color before rendering. 
-The second one, gdepth has its color cleared to solid white before rendering and uses a higher precision storage buffer suitable for storing depth values. 
-The rest have their color cleared to black with 0 alpha.
+在延迟着色器，合成着色器，最终着色器里，这些颜色附件由gcolor, gdepth, gnormal, composite, gaux1, gaux2, gaux3 和 gaux4 uniforms关键字来引用。
+(colortex0 到 colortex7 可以用于代替 gcolor, gdepth 等)
+尽管命名不一，但所有这些颜色附件都是相同的，除了前两个之外，它们可以用于任何目的.
+第一个关键字gcolor,在渲染之前会将颜色替换成当前的雾色。
+第二个关键字gdepth,在渲染之前将其颜色清除为纯白色，并使用适合存储深度值的更高精度的存储缓冲区。
+剩下的关键字会在渲染前将各自的颜色替换成0 alpha通道的黑色。
 
 每个颜色附件使用两个缓存器，逻辑名分别为"main"和"alt", 它们可以被当成乒乓缓存器(ping-pong buffer)使用.
 When the buffers are flipped the mapping between main/alt and A/B is reversed.
@@ -62,9 +62,9 @@ Writing to color attachments that the composite shader also reads from will gene
 ===============
 名称                         渲染目标                                When not defined use
 ========================================================================================
-<none>                       gui, 菜单                            <none>
+<none>                       gui, 菜单                              <none>
 --- Shadow map ---
-shadow                       everything in shadow pass             <none>  
+shadow                       在阴影pass里的所有物体                  <none>  
 shadow_solid                 <not used>                            shadow
 shadow_cutout                <not used>                            shadow
 --- GBuffers ---
@@ -352,9 +352,9 @@ Source                                          Effect                          
 #extension GL_ARB_geometry_shader4 : enable     Enable GL_ARB_geometry_shader4
 const int maxVerticesOut = 3;                   Set GEOMETRY_VERTICES_OUT_ARB for GL_ARB_geometry_shader4 
 
-Fragment Shader Configuration
+片段着色器组态
 =============================
-Source                                          Effect                                                     Comment
+代码                                            效果                                                    备注
 =====================================================================================================================================================================
 uniform <type> shadow;                          shadowDepthBuffers = 1
 uniform <type> watershadow;                     shadowDepthBuffers = 2
@@ -425,7 +425,7 @@ const bool <bufferIndex>Clear = false;          gbuffersClear[index] = false    
 const bool <bufferIndex>MipmapEnabled = true;   bufferMipmaps[index] = true                                Only for programs "composite" , "deferred" and "final"
 /* DRAWBUFFERS:0246 */                          drawBuffers = "0246"                                       Draw buffers 0, 2, 4 and 6
 
-Draw Buffer Index 
+绘制缓存编号
 ==================
 Prefix                  Index
 ==================================
@@ -439,7 +439,7 @@ gaux2                   5
 gaux3                   6
 gaux4                   7
  
-Texture Formats
+纹理类型
 ===============
 1. 8-bit normalized
  R8
@@ -461,34 +461,34 @@ Texture Formats
  RG16_SNORM
  RGB16_SNORM
  RGBA16_SNORM
-5. 16-bit float
+5. 16-bit 浮点(float)
  R16F
  RG16F
  RGB16F
  RGBA16F
-6. 32-bit float     
+6. 32-bit 浮点(float)    
  R32F
  RG32F
  RGB32F
  RGBA32F
-7. 32-bit integer
+7. 32-bit 整数(integer)
  R32I
  RG32I
  RGB32I
  RGBA32I
-8. 32-bit unsigned integer 
+8. 32-bit 无符号整数(unsigned integer)
  R32UI
  RG32UI
  RGB32UI
  RGBA32UI
-9. Mixed
+9. 混合型(Mixed)
  R3_G3_B2
  RGB5_A1
  RGB10_A2
  R11F_G11F_B10F
  RGB9_E5
 
-Block ID mapping
+方块ID映射
 ================
 The block ID mapping is defined in "shaders/block.properties" included in the shader pack.
 Forge mods may add custom block mapping as "assets/<modid>/shaders/block.properties" in the mod JAR file.
@@ -508,25 +508,24 @@ See "properties_files.txt" for the block matching rules.
 
 See "properties.files" for more details.
 
-Block render layers
+方块渲染等级
 ===================
-The custom block render layers are defined in "shaders/block.properties" included in the shader pack.
+在光影包中，自定义方块的渲染在"shaders/block.properties"中被声明.
 
   layer.solid=<blocks>
   layer.cutout=<blocks>
   layer.cutout_mipped=<blocks>
   layer.translucent=<blocks>
 
-Layers
-  solid - no alpha, no blending (solid textures)
-  cutout - alpha, no blending (cutout textures)
-  cutout_mipped - alpha, no blending, mipmaps (cutout with mipmaps)
-  translucent - alpha, blending, mipmaps (water, stained glass)
+等级
+  solid - 无alpha通道，无烘培效果 (solid textures)
+  cutout - 有alpha通道，无烘培效果 (cutout textures)
+  cutout_mipped - 有alpha通道，无烘培效果，带(Mipmaps)多级渐远纹理(cutout with mipmaps)
+  translucent - 有alpha通道, 有烘培效果blending,带(Mipmaps)多级渐远纹理(water, stained glass)
  
-Blocks which are solid opaque cubes (stone, dirt, ores, etc) can't be rendered on a custom layer
-as this would affect face culling, ambient occlusion, light propagation and so on.
-
-For exaple:
+不能在自定义等级上渲染固体不透明方块（石头，泥土，矿石等），
+因为这会影响面部剔除，环境遮挡，光传播等。
+例如:
   layer.translucent=glass_pane fence wooden_door
 
 物品 ID 映射
@@ -536,12 +535,12 @@ Forge mods中的自定义物品可以在mod中的JAR文件里将物品映射添�
  "item.properties"文件中可以使用预处理命令如(#ifdef, #if, etc.)
 更多的细节请参阅 "Standard Macros"中的 A 到 G部分。可选macros不再适用。
 格式： "item.<id>=<item1> <item2> ..."
-The key is the substitute item ID, the values are the items which are to be replaced.
-Only one line per item ID is allowed.
+关键字是替换项的ID，值是要替换的项.
+每个替换的物品ID只允许一行。
 
-  # Short format
+  # 短格式 format
   item.5000=diamond_sword dirt
-  # Long format
+  # 长格式
   item.5001=minecraft:diamond_sword botania:reeds
 
 Entity ID mapping
@@ -607,11 +606,11 @@ G. OpenGL扩展
  Only the macros which are referenced and supported are added to the shader file.
 
 H. 可选项
- #define MC_FXAA_LEVEL <value>       // When FXAA is enabled, values: 2, 4
- #define MC_NORMAL_MAP               // When the normal map is enabled
- #define MC_SPECULAR_MAP             // When the specular map is enabled
- #define MC_RENDER_QUALITY <value>   // Values: 0.5, 0.70710677, 1.0, 1.4142135, 2.0
- #define MC_SHADOW_QUALITY <value>   // Values: 0.5, 0.70710677, 1.0, 1.4142135, 2.0
+ #define MC_FXAA_LEVEL <value>       // 在FXAA被启用时值可以被设置为: 2, 4
+ #define MC_NORMAL_MAP               // 在法线贴图被被启用时使用
+ #define MC_SPECULAR_MAP             // 在高光贴图功能被启用时使用When the specular map is enabled
+ #define MC_RENDER_QUALITY <value>   // 渲染质量，值: 0.5, 0.70710677, 1.0, 1.4142135, 2.0
+ #define MC_SHADOW_QUALITY <value>   // 阴影质量，值: 0.5, 0.70710677, 1.0, 1.4142135, 2.0
  #define MC_HAND_DEPTH <value>       // Values: 0.0625, 0.125, 0.25
  #define MC_OLD_HAND_LIGHT           // When Old Hand Light is enabled
  #define MC_OLD_LIGHTING             // When Old Lighting is enabled
