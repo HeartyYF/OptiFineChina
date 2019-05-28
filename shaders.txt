@@ -523,9 +523,9 @@ See "properties.files" for more details.
   cutout_mipped - 有alpha通道，无烘培效果，带(Mipmaps)多级渐远纹理(cutout with mipmaps)
   translucent - 有alpha通道, 有烘培效果blending,带(Mipmaps)多级渐远纹理(water, stained glass)
  
-不能在自定义等级上渲染固体不透明方块（石头，泥土，矿石等），
+不能在自定义渲染等级中渲染固体不透明方块（石头，泥土，矿石等）。
 因为这会影响面部剔除，环境遮挡，光传播等。
-例如:
+错误的例子:
   layer.translucent=glass_pane fence wooden_door
 
 物品 ID 映射
